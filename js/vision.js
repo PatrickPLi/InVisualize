@@ -42,8 +42,10 @@
 
 const ticker1 = document.querySelector(".resultTicker1");
 const price1 = document.querySelector(".resultPrice1");
-const category1 = document.querySelector(".category1")
+const category1 = document.querySelector(".category1");
+const lastUpdated = document.querySelector(".lastTime");
 
+const apiKey = ["CYF716TBUK4G28A9", "YHMAG5743MI9JGNY", "CT8WTPTQMP09XOZ8", "IM1860IAWL0L3V77", "YHMAG5743MI9JGNY"]; //Alpha Vantage
 
 function processImage() {
   // **********************************************
@@ -51,7 +53,7 @@ function processImage() {
   // **********************************************
 
   // Replace <Subscription Key> with your valid subscription key.
-  var subscriptionKey = "561fc26c58324cc3a7a7715340c91fb8";
+  var subscriptionKey = "561fc26c58324cc3a7a7715340c91fb8"; //Azure
 
   // You must use the same Azure region in your REST API method as you used to
   // get your subscription keys. For example, if you got your subscription keys
@@ -72,6 +74,8 @@ function processImage() {
   };
 
   // Display the image.
+  const sourceImage = document.querySelector(".sourceImage");
+  sourceImage.innerHTML = "Source Image:";
   var sourceImageUrl = document.getElementById("inputImage").value;
   document.querySelector("#sourceImage").src = sourceImageUrl;
 
@@ -94,13 +98,10 @@ function processImage() {
 
     .done(function (data) {
       // Show formatted JSON on webpage.
-      //console.log(JSON.stringify(data, ['description', 'tags'], 2))
       console.log(data['description']['tags'][0]);
       category1.innerHTML = data['description']['tags'][0];
-      $("#responseTextArea").val(data['description']['tags'][0])
-
-      //category1.innerHTML = JSON.stringify(data, ['description', 'tags'], 2);
-      //$("#responseTextArea").val(JSON.stringify(data, ['description',  'tags'], 2));
+      var stockDescription = data['description']['tags'][0];
+      findStockTickers(stockDescription);
     })
 
     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -112,3 +113,72 @@ function processImage() {
       alert(errorString);
     });
 };
+
+function findStockTickers(description) {
+  var ticker = "AAPL";
+  getAlphaVantagedata(ticker);
+}
+
+function getAlphaVantagedata(ticker) {
+  var url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + ticker + '&interval=1min&apikey=' + apiKey[0];
+  requestFile(url, ticker);
+}
+
+function requestFile(url, stock) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.onload = callback;
+  xhr.send(null);
+
+  function callback(xhr) {
+
+    let response, json, lines;
+
+    response = xhr.target.response;
+
+    response = JSON.parse(response);
+
+    console.log(response);
+
+    latestTimeSeries = Object.keys(response['Time Series (1min)'])[0];
+
+    latestClosePrice = response['Time Series (1min)'][latestTimeSeries]['4. close'];
+
+    selectedStock = { ticker: stock, price: latestClosePrice };
+
+    console.log(selectedStock);
+
+    console.log(latestClosePrice);
+
+    ticker1.innerHTML = stock;
+
+    price1.innerHTML = "$" + parseFloat(selectedStock.price).toFixed(2);
+
+    setLastUpdatedTime();
+
+  }
+}
+
+function setLastUpdatedTime() {
+  var time = new Date(),
+    hours = time.getHours(),
+    minutes = time.getMinutes();
+
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+
+  var suffix = "AM";
+  if (hours >= 12) {
+    suffix = "PM";
+    hours = hours - 12;
+  }
+  if (hours == 0) {
+    hours = 12;
+  }
+
+  time = (hours + ":" + minutes + " " + suffix);
+
+  console.log(time);
+  lastUpdated.innerHTML = "Last updated at " + time;
+}

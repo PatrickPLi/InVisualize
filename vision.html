@@ -17,8 +17,11 @@
   <!-- Page level plugin CSS-->
   <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+  
 
 </head>
 
@@ -101,7 +104,7 @@
 
         <!-- Icon Cards-->
         <div class="row">
-          <div class="col-xl-9 col-sm-9 mb-9">
+          <div class="col-xl-6 col-sm-6 mb-9">
             <div class="card text-white bg-primary o-hidden h-100">
               <div class="card-body">
                 <div class="card-body-icon">
@@ -111,9 +114,8 @@
               </div>
               <a class="card-footer text-white clearfix small z-1" href="#">
                 <span class="float-left">Enter the URL to an image, then click the <strong>Analyze image</strong> button.</span>
-                  
-                  <br><br>
-                  Image to analyze:
+                  <br></br>
+                  <p>Image to analyze: </p>
                   <input type="text" name="inputImage" id="inputImage"/>
                   <button onclick="processImage()">Analyze image</button>
                   <br><br>
@@ -124,8 +126,8 @@
                       <textarea id="responseTextArea" class="UIInput" style="width:580px; height:400px;"></textarea>
                     </div> -->
                     <div id="imageDiv" style="width:420px; display:table-cell;">
-                      Source image:
-                      <br><br>
+                      <p class="sourceImage"></p>
+
                       <img id="sourceImage" width="400" />
                     </div>
                   </div>
@@ -176,7 +178,9 @@
               </table>
             </div>
           </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          <div class="card-footer small text-muted">
+            <p class="lastTime"></p>
+          </div>
         </div>
 
       </div>
