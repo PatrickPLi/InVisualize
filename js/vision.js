@@ -40,8 +40,75 @@
 })(jQuery); // End of use strict
 
 
-const ticker1 = document.querySelector(".ticker1");
-const price1 = document.querySelector(".price1");
+const ticker1 = document.querySelector(".resultTicker1");
+const price1 = document.querySelector(".resultPrice1");
+const category1 = document.querySelector(".category1")
 
-const apiKey = ["CYF716TBUK4G28A9","YHMAG5743MI9JGNY","CT8WTPTQMP09XOZ8","IM1860IAWL0L3V77","YHMAG5743MI9JGNY"];
-333
+
+function processImage() {
+  // **********************************************
+  // *** Update or verify the following values. ***
+  // **********************************************
+
+  // Replace <Subscription Key> with your valid subscription key.
+  var subscriptionKey = "561fc26c58324cc3a7a7715340c91fb8";
+
+  // You must use the same Azure region in your REST API method as you used to
+  // get your subscription keys. For example, if you got your subscription keys
+  // from the West US region, replace "westcentralus" in the URL
+  // below with "westus".
+  //
+  // Free trial subscription keys are generated in the "westus" region.
+  // If you use a free trial subscription key, you shouldn't need to change
+  // this region.
+  var uriBase =
+    "https://canadacentral.api.cognitive.microsoft.com/vision/v2.0/analyze";
+
+  // Request parameters.
+  var params = {
+    "visualFeatures":"Description",
+    "details": "",
+    "language": "en",
+  };
+
+  // Display the image.
+  var sourceImageUrl = document.getElementById("inputImage").value;
+  document.querySelector("#sourceImage").src = sourceImageUrl;
+
+  // Make the REST API call.
+  $.ajax({
+    url: uriBase + "?" + $.param(params),
+
+    // Request headers.
+    beforeSend: function (xhrObj) {
+      xhrObj.setRequestHeader("Content-Type", "application/json");
+      xhrObj.setRequestHeader(
+        "Ocp-Apim-Subscription-Key", subscriptionKey);
+    },
+
+    type: "POST",
+
+    // Request body.
+    data: '{"url": ' + '"' + sourceImageUrl + '"}',
+  })
+
+    .done(function (data) {
+      // Show formatted JSON on webpage.
+      //console.log(JSON.stringify(data, ['description', 'tags'], 2))
+      console.log(data['description']['tags'][0]);
+      category1.innerHTML = data['description']['tags'][0];
+      $("#responseTextArea").val(data['description']['tags'][0])
+
+      //category1.innerHTML = JSON.stringify(data, ['description', 'tags'], 2);
+      //$("#responseTextArea").val(JSON.stringify(data, ['description',  'tags'], 2));
+    })
+
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      // Display error message.
+      var errorString = (errorThrown === "") ? "Error. " :
+        errorThrown + " (" + jqXHR.status + "): ";
+      errorString += (jqXHR.responseText === "") ? "" :
+        jQuery.parseJSON(jqXHR.responseText).message;
+      alert(errorString);
+    });
+};
