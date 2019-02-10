@@ -47,6 +47,8 @@ const lastUpdated = document.querySelector(".lastTime");
 
 const apiKey = ["CYF716TBUK4G28A9", "YHMAG5743MI9JGNY", "CT8WTPTQMP09XOZ8", "IM1860IAWL0L3V77", "YHMAG5743MI9JGNY"]; //Alpha Vantage
 
+var id = "no";
+
 function processImage() {
   // **********************************************
   // *** Update or verify the following values. ***
@@ -98,10 +100,18 @@ function processImage() {
 
     .done(function (data) {
       // Show formatted JSON on webpage.
+      console.log(data);
       console.log(data['description']['tags'][0]);
       category1.innerHTML = data['description']['tags'][0];
       var stockDescription = data['description']['tags'][0];
-      findStockTickers(stockDescription);
+
+      var request = new XMLHttpRequest();
+      request.open("GET", "http://localhost:3000/find?ticker=null&category=electronics");
+      //request.onload = () => { setVar(request.responseText) }
+      request.onload = () => {setVar(request.responseText)}
+      request.send();
+
+      //findStockTickers(stockDescription);
     })
 
     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -113,6 +123,11 @@ function processImage() {
       alert(errorString);
     });
 };
+
+function setVar(ret) {
+  id = ret;
+  getAlphaVantagedata(id);
+}
 
 function findStockTickers(description) {
   var ticker = "AAPL";
@@ -181,4 +196,15 @@ function setLastUpdatedTime() {
 
   console.log(time);
   lastUpdated.innerHTML = "Last updated at " + time;
+}
+
+
+// ************************************************************************************//
+
+
+// Database Stuff
+function httpGetAsync(theUrl) {
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+  xmlHttp.send(null);
 }
