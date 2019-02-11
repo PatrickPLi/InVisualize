@@ -12,7 +12,7 @@ The front-end of the web application was initially built using HTML, CSS, and Ja
 - [x] Image recognition works
 - [x] Bootstrap
 - [x] Express.js, MongoDB, Node.js
-- [] Add user account functionality
-- [] Create portfolio management page where users can track their portfolios
-- [] Cool animations
-- [] World domination(???)
+- [ ] Add user account functionality
+- [ ] Create portfolio management page where users can track their portfolios
+- [ ] Cool animations
+- [ ] World domination(???)
