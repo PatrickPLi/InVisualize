@@ -55,7 +55,7 @@ function processImage() {
   // **********************************************
 
   // Replace <Subscription Key> with your valid subscription key.
-  var subscriptionKey = "561fc26c58324cc3a7a7715340c91fb8"; //Azure
+  var subscriptionKey = "xxxxxxxxxxxxxxxxxxxxx"; //Azure
 
   // You must use the same Azure region in your REST API method as you used to
   // get your subscription keys. For example, if you got your subscription keys
