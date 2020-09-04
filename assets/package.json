@@ -36,7 +36,7 @@
     "express": "^4.16.4",
     "jquery": "3.3.1",
     "jquery.easing": "^1.4.1",
-    "mongodb": "^2.2.36",
+    "mongodb": "^3.1.13",
     "mongoose": "^5.4.11"
   },
   "devDependencies": {
