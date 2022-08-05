@@ -37,7 +37,7 @@
     "jquery": "3.3.1",
     "jquery.easing": "^1.4.1",
     "mongodb": "^2.2.36",
-    "mongoose": "^5.4.11"
+    "mongoose": "^5.7.5"
   },
   "devDependencies": {
     "browser-sync": "2.26.3",
